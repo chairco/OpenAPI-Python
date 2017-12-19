@@ -2,10 +2,6 @@
 # encoding: utf-8
 
 import unittest
-import sys
-
-from os import path
-sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 from kkbox_developer_sdk.track_fetcher import *
 from kkbox_developer_sdk.artist_fetcher import *
@@ -21,7 +17,7 @@ from kkbox_developer_sdk.feature_playlist_category_fetcher import *
 from kkbox_developer_sdk.new_hits_playlist_fetcher import *
 from kkbox_developer_sdk.auth_flow import *
 
-from client import ClientInfo
+from env import ClientInfo
 
 CLIENT_ID = ClientInfo.client_id
 CLIENT_SECRET = ClientInfo.client_secret
@@ -29,9 +25,17 @@ CLIENT_SECRET = ClientInfo.client_secret
 
 class TestAPISDK(unittest.TestCase):
 
+    def log(self, msg):
+        objid = hex(id(self))
+        print("<{}>: {} -- {}".format(objid, msg, self._testMethodName))
+
     def setUp(self):
         auth = KKBOXOAuth(CLIENT_ID, CLIENT_SECRET)
         self.token = auth.fetch_access_token_by_client_credentials()
+
+    def tearDown(self):
+        """tearDown"""
+        self.log('tearDownnvoked.')
 
     def _validate_image(self, image):
         keys = ('url', 'width', 'height')
