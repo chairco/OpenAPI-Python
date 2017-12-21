@@ -23,19 +23,8 @@ CLIENT_ID = ClientInfo.client_id
 CLIENT_SECRET = ClientInfo.client_secret
 
 
-class TestAPISDK(unittest.TestCase):
 
-    def log(self, msg):
-        objid = hex(id(self))
-        print("<{}>: {} -- {}".format(objid, msg, self._testMethodName))
-
-    def setUp(self):
-        auth = KKBOXOAuth(CLIENT_ID, CLIENT_SECRET)
-        self.token = auth.fetch_access_token_by_client_credentials()
-
-    def tearDown(self):
-        """tearDown"""
-        self.log('tearDownnvoked.')
+class Base:
 
     def _validate_image(self, image):
         keys = ('url', 'width', 'height')
@@ -181,6 +170,26 @@ class TestAPISDK(unittest.TestCase):
                     self._validate_image(image)
             for paging in station_paging['paging']:
                 self._validate_paging(paging)
+
+    def test_fetch_track(self):
+        fetcher = KKBOXTrackFetcher(self.token)
+        track_id = '4kxvr3wPWkaL9_y3o_'
+        track = fetcher.fetch_track(track_id)
+        self._validate_track(track)
+
+
+class TestAPISDK(unittest.TestCase, Base):
+
+    def log(self, msg):
+        objid = hex(id(self))
+        print("<{}>: {} -- {}".format(objid, msg, self._testMethodName))
+
+    def setUp(self):
+        auth = KKBOXOAuth(CLIENT_ID, CLIENT_SECRET)
+        self.token = auth.fetch_access_token_by_client_credentials()
+
+    def tearDown(self):
+        self.log('tearDownnvoked.')
 
     def test_fetch_track(self):
         fetcher = KKBOXTrackFetcher(self.token)
