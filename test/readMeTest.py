@@ -1,12 +1,14 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
 import unittest
-import sys
-from os import path
-sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+
 
 class TestReadMe(unittest.TestCase):
+
     def testReadMeExample(self):
         from kkbox_developer_sdk.auth_flow import KKBOXOAuth
-        from client import ClientInfo
+        from env import ClientInfo
         auth = KKBOXOAuth(ClientInfo.client_id, ClientInfo.client_secret)
         token = auth.fetch_access_token_by_client_credentials()
         from kkbox_developer_sdk.api import KKBOXAPI
