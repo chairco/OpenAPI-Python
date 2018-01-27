@@ -12,7 +12,7 @@ install:
 
 # command to run tests
 script:
-- cp .env.example .env
+- cp .env_example .env
 # pass environment variables in travis to the app
 - sed -ri 's/^client_id=/client_id="'$client_id'"/' .env
 - sed -ri 's/^client_secret=/client_secret="'$client_secret'"/' .env
