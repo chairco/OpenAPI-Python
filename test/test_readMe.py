@@ -8,7 +8,7 @@ class TestReadMe(unittest.TestCase):
 
     def testReadMeExample(self):
         from kkbox_developer_sdk.auth_flow import KKBOXOAuth
-        from env import ClientInfo
+        from .env import ClientInfo
         auth = KKBOXOAuth(ClientInfo.client_id, ClientInfo.client_secret)
         token = auth.fetch_access_token_by_client_credentials()
         from kkbox_developer_sdk.api import KKBOXAPI

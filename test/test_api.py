@@ -17,7 +17,7 @@ from kkbox_developer_sdk.feature_playlist_category_fetcher import *
 from kkbox_developer_sdk.new_hits_playlist_fetcher import *
 from kkbox_developer_sdk.auth_flow import *
 
-from env import ClientInfo
+from .env import ClientInfo
 
 CLIENT_ID = ClientInfo.client_id
 CLIENT_SECRET = ClientInfo.client_secret
