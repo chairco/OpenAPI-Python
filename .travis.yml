@@ -1,0 +1,19 @@
+language: python
+python:
+  - '3.6'
+  - '2.7'
+
+# command to install dependencies
+install:
+- pip install -U pip
+- pip install wheel
+- pip wheel -q -r requirements/travis.txt
+- pip install -r requirements/travis.txt
+
+# command to run tests
+script:
+- cp .env.example .env
+# pass environment variables in travis to the app
+- sed -ri 's/^client_id=/client_id="'$client_id'"/' .env
+- sed -ri 's/^client_secret=/client_secret="'$client_secret'"/' .env
+- py.test --capture=sys
