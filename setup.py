@@ -29,7 +29,8 @@ setup(
     install_requires=requirements('requirements.txt'),
     extras_require={
             ':python_version=="2.7"': [
-                'functools32>=3.2<=3.99'
+                'functools32>=3.2<=3.99',
+                'pathlib'
             ],
     },
     keywords=['KKBOX', 'Open', 'API', 'OpenAPI']
