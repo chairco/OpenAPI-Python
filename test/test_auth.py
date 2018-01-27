@@ -5,7 +5,7 @@ import unittest
 
 from kkbox_developer_sdk.auth_flow import *
 
-from env import ClientInfo
+from .env import ClientInfo
 
 
 CLIENT_ID = ClientInfo.client_id
