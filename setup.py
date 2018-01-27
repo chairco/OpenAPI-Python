@@ -6,14 +6,14 @@ Installer for KKBOX SDK
 
 import uuid
 
-from pip.req import parse_requirements  
+from pip.req import parse_requirements
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
 import kkbox_developer_sdk as kksdk
 
 
-def requirements(path):  
+def requirements(path):
     return [str(r.req) for r in parse_requirements(path, session=uuid.uuid1())]
 
 
@@ -28,10 +28,10 @@ setup(
     packages=find_packages(),
     install_requires=requirements('requirements.txt'),
     extras_require={
-            ':python_version=="2.7"': [
+        ':python_version=="2.7"': [
                 'functools32>=3.2<=3.99',
                 'pathlib'
-            ],
+        ],
     },
     keywords=['KKBOX', 'Open', 'API', 'OpenAPI']
 )

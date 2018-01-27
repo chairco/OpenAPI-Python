@@ -42,6 +42,18 @@ class Base:
         for image in artist['images']:
             self._validate_image(image)
 
+    def _validate_artist_paging(self, artist_paging):
+        if artist_paging is None:
+            pass
+        else:
+            keys = ('paging', 'data', 'summary')
+            for key in keys:
+                assert key in artist_paging, 'missing key ' + key
+            for artist in artist_paging['data']:
+                self._validate_artist(artist)
+            for paging in artist_paging['paging']:
+                self._validate_paging(paging)
+
     def _validate_album(self, album):
         keys = ('id', 'name', 'url', 'explicitness',
                 'available_territories', 'images')
@@ -219,6 +231,17 @@ class TestAPISDK(unittest.TestCase, Base):
         next_page_data = fetcher.fetch_next_page(tracks)
         self._validate_track_paging(next_page_data)
 
+    def test_fetch_related_artists(self):
+        auth = KKBOXOAuth(CLIENT_ID, CLIENT_SECRET)
+        token = auth.fetch_access_token_by_client_credentials()
+        fetcher = KKBOXArtistFetcher(token)
+        artist_id = 'CluDKLYxr1GFQqLSZt'
+        artists = fetcher.fetch_related_artists(artist_id)
+        self._validate_artist_paging(artists)
+        next_page_data = fetcher.fetch_next_page(artists)
+        self._validate_artist_paging(next_page_data)
+
+
     def test_fetch_album(self):
         fetcher = KKBOXAlbumFetcher(self.token)
         album_id = 'WpTPGzNLeutVFHcFq6'
@@ -278,6 +301,26 @@ class TestAPISDK(unittest.TestCase, Base):
         self._validate_playlist_paging(charts)
         next_page_data = fetcher.fetch_next_page(charts)
         self._validate_playlist_paging(next_page_data)
+
+    def test_fetch_charts_playlist(self):
+        auth = KKBOXOAuth(CLIENT_ID, CLIENT_SECRET)
+        token = auth.fetch_access_token_by_client_credentials()
+        fetcher = KKBOXChartFetcher(token)
+        playlist_id = '0kTVCy_kzou3AdOsAc'
+        playlist = fetcher.fetch_charts_playlist(playlist_id)
+        self._validate_playlist(playlist)
+        next_page_data = fetcher.fetch_next_page(playlist['tracks'])
+        self._validate_track_paging(next_page_data)
+
+    def test_fetch_charts_playlist_tracks(self):
+        auth = KKBOXOAuth(CLIENT_ID, CLIENT_SECRET)
+        token = auth.fetch_access_token_by_client_credentials()
+        fetcher = KKBOXChartFetcher(token)
+        playlist_id = '0kTVCy_kzou3AdOsAc'
+        playlist = fetcher.fetch_charts_playlist_tracks(playlist_id)
+        self._validate_track_paging(playlist)
+        next_page_data = fetcher.fetch_next_page(playlist)
+        self._validate_track_paging(next_page_data)
 
     def test_fetch_all_new_release_categories(self):
         fetcher = KKBOXNewReleaseCategoryFetcher(self.token)
@@ -344,6 +387,26 @@ class TestAPISDK(unittest.TestCase, Base):
         next_page_data = fetcher.fetch_next_page(feature_playlists)
         self._validate_playlist_paging(next_page_data)
 
+    def test_fetch_feature_playlist(self):
+        auth = KKBOXOAuth(CLIENT_ID, CLIENT_SECRET)
+        token = auth.fetch_access_token_by_client_credentials()
+        fetcher = KKBOXFeaturePlaylistFetcher(token)
+        playlist_id = 'Wt95My35CqR9hB_FW1'
+        feature_playlist = fetcher.fetch_feature_playlist(playlist_id)
+        self._validate_playlist(feature_playlist)
+        next_page_data = fetcher.fetch_next_page(feature_playlist['tracks'])
+        self._validate_track_paging(next_page_data)
+
+    def test_fetch_feature_playlist_tracks(self):
+        auth = KKBOXOAuth(CLIENT_ID, CLIENT_SECRET)
+        token = auth.fetch_access_token_by_client_credentials()
+        fetcher = KKBOXFeaturePlaylistFetcher(token)
+        playlist_id = 'Wt95My35CqR9hB_FW1'
+        feature_playlist = fetcher.fetch_feature_playlist_tracks(playlist_id)
+        self._validate_track_paging(feature_playlist)
+        next_page_data = fetcher.fetch_next_page(feature_playlist)
+        self._validate_track_paging(next_page_data)
+
     def test_fetch_categories_of_feature_playlist(self):
         fetcher = KKBOXFeaturePlaylistCategoryFetcher(self.token)
         categories = fetcher.fetch_categories_of_feature_playlist()
@@ -386,6 +449,18 @@ class TestAPISDK(unittest.TestCase, Base):
         self._validate_playlist(new_hits)
         next_page_data = fetcher.fetch_next_page(new_hits['tracks'])
         self._validate_track_paging(next_page_data)
+
+    def test_fetch_new_hits_playlist_track(self):
+        auth = KKBOXOAuth(CLIENT_ID, CLIENT_SECRET)
+        token = auth.fetch_access_token_by_client_credentials()
+        fetcher = KKBOXNewHitsPlaylistFetcher(token)
+        playlist_id = 'DZrC8m29ciOFY2JAm3'
+        new_hits = fetcher.fetch_new_hits_playlist_tracks(playlist_id)
+        self._validate_track_paging(new_hits)
+        next_page_data = fetcher.fetch_next_page(new_hits)
+        self._validate_track_paging(next_page_data)
+
+
 
 
 if __name__ == '__main__':
