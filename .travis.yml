@@ -16,4 +16,5 @@ script:
 # pass environment variables in travis to the app
 - sed -ri 's/^client_id=/client_id="'$client_id'"/' .env
 - sed -ri 's/^client_secret=/client_secret="'$client_secret'"/' .env
+- python setup.py install
 - py.test --capture=sys
